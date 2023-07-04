@@ -1,24 +1,20 @@
 # This configuration file is for the **development** setup.
 # For a production example please refer to getredash/setup repository on GitHub.
 version: "2.2"
-x-redash-service: &redash-service
+x-redash-service:
+  &redash-service
   build:
     context: .
     args:
-      skip_frontend_build: "true"  # set to empty string to build
+      skip_frontend_build: "true" # set to empty string to build
   volumes:
     - .:/app
   env_file:
     - .env
-x-redash-environment: &redash-environment
-  REDASH_LOG_LEVEL: "INFO"
-  REDASH_REDIS_URL: "redis://redis:6379/0"
-  REDASH_DATABASE_URL: "postgresql://postgres@postgres/postgres"
-  REDASH_RATELIMIT_ENABLED: "false"
-  REDASH_MAIL_DEFAULT_SENDER: "redash@example.com"
-  REDASH_MAIL_SERVER: "email"
-  REDASH_ENFORCE_CSRF: "true"
-  REDASH_GUNICORN_TIMEOUT: 60
+x-redash-environment:
+  &redash-environment
+  env_file:
+    - .env
   # Set secret keys in the .env file
 services:
   server:
@@ -30,23 +26,22 @@ services:
     ports:
       - "5001:5000"
       - "5678:5678"
+    <<: *redash-environment
     environment:
-      <<: *redash-environment
       PYTHONUNBUFFERED: 0
   scheduler:
     <<: *redash-service
     command: dev_scheduler
     depends_on:
       - server
-    environment:
-      <<: *redash-environment
+    <<: *redash-environment
   worker:
     <<: *redash-service
     command: dev_worker
     depends_on:
       - server
+    <<: *redash-environment
     environment:
-      <<: *redash-environment
       PYTHONUNBUFFERED: 0
   redis:
     image: redis:3-alpine
@@ -60,6 +55,8 @@ services:
     # tests.
     command: "postgres -c fsync=off -c full_page_writes=off -c synchronous_commit=OFF"
     restart: unless-stopped
+    volumes:
+      - redash-data:/var/lib/postgresql/data
     environment:
       POSTGRES_HOST_AUTH_METHOD: "trust"
   email:
@@ -67,3 +64,6 @@ services:
     ports:
       - "1080:80"
     restart: unless-stopped
+
+volumes:
+  redash-data:
