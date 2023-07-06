@@ -28,5 +28,6 @@ def dashboard(slug, org_slug=None):
 @routes.route(org_scoped_rule("/<path:path>"))
 @routes.route(org_scoped_rule("/"))
 @login_required
+@csp_allows_embeding
 def index(**kwargs):
     return render_index()
