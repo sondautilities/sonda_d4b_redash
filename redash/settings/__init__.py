@@ -75,7 +75,8 @@ INVITATION_TOKEN_MAX_AGE = int(
 SECRET_KEY = os.environ.get("REDASH_COOKIE_SECRET")
 
 if SECRET_KEY is None:
-    raise Exception("You must set the REDASH_COOKIE_SECRET environment variable. Visit http://redash.io/help/open-source/admin-guide/secrets for more information.")
+    raise Exception(
+        "You must set the REDASH_COOKIE_SECRET environment variable. Visit http://redash.io/help/open-source/admin-guide/secrets for more information.")
 
 # The secret key to use when encrypting data source options
 DATASOURCE_SECRET_KEY = os.environ.get("REDASH_SECRET_KEY", SECRET_KEY)
@@ -328,7 +329,7 @@ THROTTLE_PASS_RESET_PATTERN = os.environ.get("REDASH_THROTTLE_PASS_RESET_PATTERN
 # In most cases all you need to do is set REDASH_CORS_ACCESS_CONTROL_ALLOW_ORIGIN
 # to the calling domain (or domains in a comma separated list).
 ACCESS_CONTROL_ALLOW_ORIGIN = set_from_string(
-    os.environ.get("REDASH_CORS_ACCESS_CONTROL_ALLOW_ORIGIN", "")
+    os.environ.get("REDASH_CORS_ACCESS_CONTROL_ALLOW_ORIGIN", "*")
 )
 ACCESS_CONTROL_ALLOW_CREDENTIALS = parse_boolean(
     os.environ.get("REDASH_CORS_ACCESS_CONTROL_ALLOW_CREDENTIALS", "false")
