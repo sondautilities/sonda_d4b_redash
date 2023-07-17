@@ -1417,7 +1417,7 @@ We're releasing a new upgrade script -- see [here](https://redash.io/help-onprem
 
 ### Added
 
-- 61fe16e #1374: Add: allow '\*' in REDASH_CORS_ACCESS_CONTROL_ALLOW_ORIGIN (Allen Short)
+- 61fe16e #1374: Add: allow '\*' in REDASH__ACCESS_CONTROL_ALLOW_ORIGIN (Allen Short)
 - 2f09043 #1113: Add: share modify/access permissions for queries and dashboard (whummer)
 - 3db0eea #1341: Add: support for specifying SAML nameid-format (zoetrope)
 - b0ecd0e #1343: Add: support for local SAML metadata file (zoetrope)

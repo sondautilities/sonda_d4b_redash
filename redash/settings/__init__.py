@@ -215,7 +215,7 @@ SAML_ENCRYPTION_ENABLED = SAML_ENCRYPTION_PEM_PATH != "" and SAML_ENCRYPTION_CER
 # then your authentication will be seamless.  Otherwise a link will be presented
 # on the login page to trigger remote user auth.
 REMOTE_USER_LOGIN_ENABLED = parse_boolean(
-    os.environ.get("REDASH_REMOTE_USER_LOGIN_ENABLED", "false")
+    os.environ.get("REDASH_REMOTE_USER_LOGIN_ENABLED", "true")
 )
 REMOTE_USER_HEADER = os.environ.get(
     "REDASH_REMOTE_USER_HEADER", "X-Forwarded-Remote-User"
