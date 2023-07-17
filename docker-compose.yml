@@ -62,7 +62,8 @@ services:
   email:
     image: maildev/maildev
     ports:
-      - "1080:80"
+      - "1080:1080"
+      - "1025:1025"
     restart: unless-stopped
 
 volumes:
