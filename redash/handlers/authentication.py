@@ -234,6 +234,58 @@ def login(org_slug=None):
     )
 
 
+@routes.route(org_scoped_rule("/api/login"), methods=["POST"])
+@limiter.limit(settings.THROTTLE_LOGIN_PATTERN)
+@csp_allows_embeding
+def api_login(org_slug=None):
+
+    # We intentionally use == as otherwise it won't actually use the proxy. So weird :O
+    # noinspection PyComparisonWithNone
+    if current_org == None and not settings.MULTI_ORG:
+        return redirect("/setup")
+    elif current_org == None:
+        return redirect("/")
+
+    index_url = url_for("redash.index", org_slug=org_slug)
+    unsafe_next_path = request.args.get("next", index_url)
+    next_path = get_next_path(unsafe_next_path)
+    if current_user.is_authenticated:
+        print("Chegou aqui")
+        return redirect(next_path)
+    if request.method == 'POST' and current_org.get_setting("auth_jwt_login_enabled"):
+        try:
+            print("TOKEN", request.headers['api_key'])
+            org = current_org._get_current_object()
+            user = models.User.get_by_api_key_and_org(request.headers['api_key'], org)
+            if (
+                user
+                and not user.is_disabled
+            ):
+                remember = True
+                login_user(user, remember=remember)
+                return redirect(next_path)
+            else:
+                flash("Wrong token user.")
+        except NoResultFound:
+            flash("Wrong token user.")
+    elif request.method == "POST" and not current_org.get_setting("auth_jwt_login_enabled"):
+        flash("JWT login is not enabled for your organization.")
+
+    google_auth_url = get_google_auth_url(next_path)
+    return render_template(
+        "login.html",
+        org_slug=org_slug,
+        next=next_path,
+        email=request.form.get("email", ""),
+        show_google_openid=settings.GOOGLE_OAUTH_ENABLED,
+        google_auth_url=google_auth_url,
+        show_password_login=current_org.get_setting("auth_password_login_enabled"),
+        show_saml_login=current_org.get_setting("auth_saml_enabled"),
+        show_remote_user_login=settings.REMOTE_USER_LOGIN_ENABLED,
+        show_ldap_login=settings.LDAP_LOGIN_ENABLED,
+    )
+
+
 @routes.route(org_scoped_rule("/logout"))
 @csp_allows_embeding
 def logout(org_slug=None):
