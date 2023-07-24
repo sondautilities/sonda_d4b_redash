@@ -44,10 +44,10 @@ services:
     environment:
       PYTHONUNBUFFERED: 0
   redis:
-    image: redis:3-alpine
+    image: redis:7-alpine
     restart: unless-stopped
   postgres:
-    image: postgres:9.5-alpine
+    image: pgautoupgrade/pgautoupgrade:15-alpine3.8
     ports:
       - "15432:5432"
     # The following turns the DB into less durable, but gains significant performance improvements for the tests run (x3
@@ -62,7 +62,8 @@ services:
   email:
     image: maildev/maildev
     ports:
-      - "1080:80"
+      - "1080:1080"
+      - "1025:1025"
     restart: unless-stopped
 
 volumes:
