@@ -1,8 +1,7 @@
 # This configuration file is for the **development** setup.
 # For a production example please refer to getredash/setup repository on GitHub.
 version: "2.2"
-x-redash-service:
-  &redash-service
+x-redash-service: &redash-service
   build:
     context: .
     args:
@@ -11,8 +10,7 @@ x-redash-service:
     - .:/app
   env_file:
     - .env
-x-redash-environment:
-  &redash-environment
+x-redash-environment: &redash-environment
   env_file:
     - .env
   # Set secret keys in the .env file
@@ -26,6 +24,7 @@ services:
     ports:
       - "5001:5000"
       - "5678:5678"
+    restart: always
     <<: *redash-environment
     environment:
       PYTHONUNBUFFERED: 0
@@ -34,6 +33,7 @@ services:
     command: dev_scheduler
     depends_on:
       - server
+    restart: always
     <<: *redash-environment
   worker:
     <<: *redash-service
@@ -43,9 +43,10 @@ services:
     <<: *redash-environment
     environment:
       PYTHONUNBUFFERED: 0
+    restart: always
   redis:
     image: redis:7-alpine
-    restart: unless-stopped
+    restart: always
   postgres:
     image: pgautoupgrade/pgautoupgrade:15-alpine3.8
     ports:
@@ -54,7 +55,7 @@ services:
     # improvement on my personal machine). We should consider moving this into a dedicated Docker Compose configuration for
     # tests.
     command: "postgres -c fsync=off -c full_page_writes=off -c synchronous_commit=OFF"
-    restart: unless-stopped
+    restart: always
     volumes:
       - redash-data:/var/lib/postgresql/data
     environment:
