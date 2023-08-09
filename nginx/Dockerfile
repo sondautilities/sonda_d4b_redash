@@ -6,8 +6,8 @@ RUN apk update \
     && mkdir -p /home/nginx 
 
 COPY nginx.conf /etc/nginx/
-COPY certs/server.crt /home/nginx/
-COPY certs/server.key /home/nginx/
+COPY ../certs/server.crt /home/nginx/
+COPY ../certs/server.key /home/nginx/
 
 RUN chmod 755 -R /home/nginx
 
