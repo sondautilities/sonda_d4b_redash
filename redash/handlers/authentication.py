@@ -16,8 +16,6 @@ from redash.authentication.account import (
 from redash.handlers import routes
 from redash.handlers.base import json_response, org_scoped_rule
 from redash.version_check import get_latest_version
-from sqlalchemy.orm.exc import NoResultFound
-from redash.security import csp_allows_embeding
 logger = logging.getLogger(__name__)
 
 

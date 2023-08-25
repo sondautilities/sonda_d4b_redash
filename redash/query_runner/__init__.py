@@ -1,4 +1,8 @@
 import logging
+<<<<<<< HEAD
+=======
+from collections import defaultdict
+>>>>>>> 0258dca82a2fe9cbd222a4bea60c12ca42356c4a
 from contextlib import ExitStack
 from functools import wraps
 
@@ -212,17 +216,21 @@ class BaseQueryRunner(object):
         raise NotImplementedError()
 
     def fetch_columns(self, columns):
-        column_names = []
-        duplicates_counter = 1
+        column_names = set()
+        duplicates_counters = defaultdict(int)
         new_columns = []
 
         for col in columns:
             column_name = col[0]
-            if column_name in column_names:
-                column_name = "{}{}".format(column_name, duplicates_counter)
-                duplicates_counter += 1
+            while column_name in column_names:
+                duplicates_counters[col[0]] += 1
+                column_name = "{}{}".format(col[0], duplicates_counters[col[0]])
 
+<<<<<<< HEAD
             column_names.append(column_name)
+=======
+            column_names.add(column_name)
+>>>>>>> 0258dca82a2fe9cbd222a4bea60c12ca42356c4a
             new_columns.append({"name": column_name, "friendly_name": column_name, "type": col[1]})
 
         return new_columns
@@ -278,7 +286,7 @@ class BaseSQLQueryRunner(BaseQueryRunner):
 
     def _get_tables_stats(self, tables_dict):
         for t in tables_dict.keys():
-            if type(tables_dict[t]) == dict:
+            if isinstance(tables_dict[t], dict):
                 res = self._run_query_internal("select count(*) as cnt from %s" % t)
                 tables_dict[t]["size"] = res[0]["cnt"]
 
@@ -308,15 +316,13 @@ class BaseSQLQueryRunner(BaseQueryRunner):
         return str(parsed_query)
 
     def apply_auto_limit(self, query_text, should_apply_auto_limit):
+        queries = split_sql_statements(query_text)
         if should_apply_auto_limit:
-            queries = split_sql_statements(query_text)
             # we only check for last one in the list because it is the one that we show result
             last_query = queries[-1]
             if self.query_is_select_no_limit(last_query):
                 queries[-1] = self.add_limit_to_query(last_query)
-            return combine_sql_statements(queries)
-        else:
-            return query_text
+        return combine_sql_statements(queries)
 
 
 class BaseHTTPQueryRunner(BaseQueryRunner):

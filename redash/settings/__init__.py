@@ -59,7 +59,12 @@ SECRET_KEY = os.environ.get("REDASH_COOKIE_SECRET")
 
 if SECRET_KEY is None:
     raise Exception(
+<<<<<<< HEAD
         "You must set the REDASH_COOKIE_SECRET environment variable. Visit http://redash.io/help/open-source/admin-guide/secrets for more information.")
+=======
+        "You must set the REDASH_COOKIE_SECRET environment variable. Visit http://redash.io/help/open-source/admin-guide/secrets for more information."
+    )
+>>>>>>> 0258dca82a2fe9cbd222a4bea60c12ca42356c4a
 
 # The secret key to use when encrypting data source options
 DATASOURCE_SECRET_KEY = os.environ.get("REDASH_SECRET_KEY", SECRET_KEY)
@@ -171,12 +176,8 @@ SAML_ENCRYPTION_ENABLED = SAML_ENCRYPTION_PEM_PATH != "" and SAML_ENCRYPTION_CER
 # If you also set the organization setting auth_password_login_enabled to false,
 # then your authentication will be seamless.  Otherwise a link will be presented
 # on the login page to trigger remote user auth.
-REMOTE_USER_LOGIN_ENABLED = parse_boolean(
-    os.environ.get("REDASH_REMOTE_USER_LOGIN_ENABLED", "false")
-)
-REMOTE_USER_HEADER = os.environ.get(
-    "REDASH_REMOTE_USER_HEADER", "X-Forwarded-Remote-User"
-)
+REMOTE_USER_LOGIN_ENABLED = parse_boolean(os.environ.get("REDASH_REMOTE_USER_LOGIN_ENABLED", "false"))
+REMOTE_USER_HEADER = os.environ.get("REDASH_REMOTE_USER_HEADER", "X-Forwarded-Remote-User")
 
 # If the organization setting auth_password_login_enabled is not false, then users will still be
 # able to login through Redash instead of the LDAP server
@@ -336,6 +337,11 @@ default_query_runners = [
     "redash.query_runner.arango",
     "redash.query_runner.google_analytics4",
     "redash.query_runner.google_search_console",
+<<<<<<< HEAD
+=======
+    "redash.query_runner.ignite",
+    "redash.query_runner.oracle",
+>>>>>>> 0258dca82a2fe9cbd222a4bea60c12ca42356c4a
 ]
 
 enabled_query_runners = array_from_string(
