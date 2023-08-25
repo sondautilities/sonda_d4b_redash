@@ -1,8 +1,5 @@
 import logging
-<<<<<<< HEAD
-=======
 from collections import defaultdict
->>>>>>> 0258dca82a2fe9cbd222a4bea60c12ca42356c4a
 from contextlib import ExitStack
 from functools import wraps
 
@@ -224,11 +221,7 @@ class BaseQueryRunner(object):
                 duplicates_counters[col[0]] += 1
                 column_name = "{}{}".format(col[0], duplicates_counters[col[0]])
 
-<<<<<<< HEAD
-            column_names.append(column_name)
-=======
             column_names.add(column_name)
->>>>>>> 0258dca82a2fe9cbd222a4bea60c12ca42356c4a
             new_columns.append({"name": column_name, "friendly_name": column_name, "type": col[1]})
 
         return new_columns

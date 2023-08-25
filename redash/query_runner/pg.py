@@ -485,11 +485,8 @@ class RedshiftIAM(Redshift):
         }
 
     def _get_connection(self):
-<<<<<<< HEAD
-=======
         self.ssl_config = {}
 
->>>>>>> 0258dca82a2fe9cbd222a4bea60c12ca42356c4a
         sslrootcert_path = os.path.join(os.path.dirname(__file__), "./files/redshift-ca-bundle.crt")
 
         login_method = self._login_method_selection()
