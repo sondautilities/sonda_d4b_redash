@@ -3,15 +3,15 @@ import logging
 
 import yaml
 from funcy import compact, project
-
+from redash import settings
+from redash.utils import json_dumps
 from redash.query_runner import (
     TYPE_BOOLEAN,
     TYPE_DATETIME,
     TYPE_FLOAT,
     TYPE_INTEGER,
     TYPE_STRING,
-    BaseHTTPQueryRunner,
-    register,
+    is_private_address,
 )
 from redash.utils import json_dumps
 
@@ -158,6 +158,9 @@ class JSON(BaseHTTPQueryRunner):
 
         if "url" not in query:
             raise QueryParseError("Query must include 'url' option.")
+
+        if is_private_address(query["url"]) and settings.ENFORCE_PRIVATE_ADDRESS_BLOCK:
+            raise Exception("Can't query private addresses.")
 
         method = query.get("method", "get")
         request_options = project(query, ("params", "headers", "data", "auth", "json", "verify"))

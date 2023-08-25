@@ -1,7 +1,6 @@
-from advocate.exceptions import UnacceptableAddressException  # noqa: F401
-
 from redash import settings
 
+from advocate.exceptions import UnacceptableAddressException
 if settings.ENFORCE_PRIVATE_ADDRESS_BLOCK:
     import advocate as requests_or_advocate
 else:

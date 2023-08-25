@@ -296,25 +296,16 @@ class BigQuery(BaseQueryRunner):
             return []
 
         project_id = self._get_project_id()
-        datasets = self._get_project_datasets(project_id)
-
-        query_base = """
-        SELECT table_schema, table_name, column_name
-        FROM `{dataset_id}`.INFORMATION_SCHEMA.COLUMNS
-        WHERE table_schema NOT IN ('information_schema')
-        """
-
-        schema = {}
-        queries = []
-        for dataset in datasets:
+        datasets = service.datasets().list(projectId=project_id).execute()
+        schema = []
+        for dataset in datasets.get("datasets", []):
             dataset_id = dataset["datasetReference"]["datasetId"]
             query = query_base.format(dataset_id=dataset_id)
             queries.append(query)
 
-        query = "\nUNION ALL\n".join(queries)
-        results, error = self.run_query(query, None)
-        if error is not None:
-            self._handle_run_query_error(error)
+                next_token = tables.get("nextPageToken", None)
+                if next_token is None:
+                    break
 
         results = json_loads(results)
         for row in results["rows"]:

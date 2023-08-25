@@ -58,13 +58,8 @@ INVITATION_TOKEN_MAX_AGE = int(os.environ.get("REDASH_INVITATION_TOKEN_MAX_AGE",
 SECRET_KEY = os.environ.get("REDASH_COOKIE_SECRET")
 
 if SECRET_KEY is None:
-    raise Exception(
-<<<<<<< HEAD
-        "You must set the REDASH_COOKIE_SECRET environment variable. Visit http://redash.io/help/open-source/admin-guide/secrets for more information.")
-=======
-        "You must set the REDASH_COOKIE_SECRET environment variable. Visit http://redash.io/help/open-source/admin-guide/secrets for more information."
-    )
->>>>>>> 0258dca82a2fe9cbd222a4bea60c12ca42356c4a
+    raise Exception("You must set the REDASH_COOKIE_SECRET environment variable. Visit http://redash.io/help/open-source/admin-guide/secrets for more information.")
+
 
 # The secret key to use when encrypting data source options
 DATASOURCE_SECRET_KEY = os.environ.get("REDASH_SECRET_KEY", SECRET_KEY)
@@ -332,6 +327,7 @@ default_query_runners = [
     "redash.query_runner.sparql_endpoint",
     "redash.query_runner.excel",
     "redash.query_runner.csv",
+<<<<<<< HEAD
     "redash.query_runner.databend",
     "redash.query_runner.nz",
     "redash.query_runner.arango",
@@ -342,6 +338,9 @@ default_query_runners = [
     "redash.query_runner.ignite",
     "redash.query_runner.oracle",
 >>>>>>> 0258dca82a2fe9cbd222a4bea60c12ca42356c4a
+=======
+    "redash.query_runner.firebolt"
+>>>>>>> 2589bef1f21b7c84e4ceacdf5cd2c620bdedb111
 ]
 
 enabled_query_runners = array_from_string(
