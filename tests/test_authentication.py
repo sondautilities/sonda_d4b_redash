@@ -8,11 +8,7 @@ import jwcrypto.jwk
 import jwt
 import requests
 from flask import request
-<<<<<<< HEAD
-from mock import patch
-=======
 from mock import Mock, patch
->>>>>>> 0258dca82a2fe9cbd222a4bea60c12ca42356c4a
 from sqlalchemy.orm.exc import NoResultFound
 
 from redash import models, settings
