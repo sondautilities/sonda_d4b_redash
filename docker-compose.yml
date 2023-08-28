@@ -11,14 +11,8 @@ x-redash-service: &redash-service
   env_file:
     - .env
 x-redash-environment: &redash-environment
-  REDASH_LOG_LEVEL: "INFO"
-  REDASH_REDIS_URL: "redis://redis:6379/0"
-  REDASH_DATABASE_URL: "postgresql://postgres@postgres/postgres"
-  REDASH_RATELIMIT_ENABLED: "false"
-  REDASH_MAIL_DEFAULT_SENDER: "redash@example.com"
-  REDASH_MAIL_SERVER: "email"
-  REDASH_ENFORCE_CSRF: "true"
-  REDASH_GUNICORN_TIMEOUT: 60
+  env_file:
+    - .env
   # Set secret keys in the .env file
 services:
   server:
@@ -60,12 +54,16 @@ services:
     networks:
       - app-network
   redis:
-    image: redis:3-alpine
-    restart: unless-stopped
+    image: redis:7-alpine
+    restart: always
+    networks:
+      - app-network
   postgres:
-    image: postgres:9.5-alpine
-    ports:
-      - "15432:5432"
+    image: pgautoupgrade/pgautoupgrade:15-alpine3.8
+    # ports:
+    #   - "15432:5432"
+    expose:
+      - 5432
     # The following turns the DB into less durable, but gains significant performance improvements for the tests run (x3
     # improvement on my personal machine). We should consider moving this into a dedicated Docker Compose configuration for
     # tests.
@@ -80,7 +78,11 @@ services:
   email:
     image: maildev/maildev
     ports:
-      - "1080:80"
+      - "1080:1080"
+      - "1025:1025"
+    # expose:
+    #   - 1080
+    #   - 1025
     restart: unless-stopped
     networks:
       - app-network

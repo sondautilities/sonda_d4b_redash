@@ -39,10 +39,8 @@ module.exports = {
           {
             loader: "less-loader",
             options: {
-              lessOptions: {
-                plugins: [new LessPluginAutoPrefix({ browsers: ["last 3 versions"] })],
-                javascriptEnabled: true,
-	      },
+              plugins: [new LessPluginAutoPrefix({ browsers: ["last 3 versions"] })],
+              javascriptEnabled: true,
             },
           },
         ],

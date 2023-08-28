@@ -27,6 +27,3 @@ npm-debug.log
 
 client/cypress/screenshots
 client/cypress/videos
-
-redash-data/*
-redash-data

@@ -40,19 +40,13 @@ types_map = {
     701: TYPE_FLOAT,
     16: TYPE_BOOLEAN,
     1082: TYPE_DATE,
-    1182: TYPE_DATE,
     1114: TYPE_DATETIME,
     1184: TYPE_DATETIME,
-    1115: TYPE_DATETIME,
-    1185: TYPE_DATETIME,
     1014: TYPE_STRING,
     1015: TYPE_STRING,
     1008: TYPE_STRING,
     1009: TYPE_STRING,
     2951: TYPE_STRING,
-    1043: TYPE_STRING,
-    1002: TYPE_STRING,
-    1003: TYPE_STRING,
 }
 
 
@@ -485,11 +479,6 @@ class RedshiftIAM(Redshift):
         }
 
     def _get_connection(self):
-<<<<<<< HEAD
-=======
-        self.ssl_config = {}
-
->>>>>>> 0258dca82a2fe9cbd222a4bea60c12ca42356c4a
         sslrootcert_path = os.path.join(os.path.dirname(__file__), "./files/redshift-ca-bundle.crt")
 
         login_method = self._login_method_selection()

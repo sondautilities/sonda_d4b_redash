@@ -81,7 +81,7 @@ class Salesforce(BaseQueryRunner):
                     "default": DEFAULT_API_VERSION,
                 },
             },
-            "required": ["username", "password"],
+            "required": ["username", "password", "token"],
             "secret": ["password", "token"],
         }
 

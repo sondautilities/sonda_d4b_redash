@@ -74,7 +74,7 @@ class MicrosoftTeamsWebhook(BaseDestination):
     def icon(cls):
         return "fa-bolt"
 
-    def notify(self, alert, query, user, new_state, app, host, metadata, options):
+    def notify(self, alert, query, user, new_state, app, host, options):
         """
         :type app: redash.Redash
         """

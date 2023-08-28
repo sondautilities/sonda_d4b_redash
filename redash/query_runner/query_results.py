@@ -56,8 +56,8 @@ def get_query_results(user, query_id, bring_from_cache):
         else:
             raise Exception("No cached result available for query {}.".format(query.id))
     else:
-<<<<<<< HEAD
         results, error = query.data_source.query_runner.run_query(query.query_text, user)
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
         results, error = query.data_source.query_runner.run_query(query.query_text, user)
@@ -69,6 +69,8 @@ def get_query_results(user, query_id, bring_from_cache):
         results, error = query.data_source.query_runner.run_query(query_text, user)
 >>>>>>> 0258dca82a2fe9cbd222a4bea60c12ca42356c4a
 >>>>>>> parent of ffcce186 (ajuste merge)
+=======
+>>>>>>> parent of 4cf1839b (Merge branch 'master' of https://github.com/getredash/redash)
         if error:
             raise Exception("Failed loading results for query id {}.".format(query.id))
         else:

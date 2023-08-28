@@ -84,7 +84,7 @@ class Trino(BaseQueryRunner):
 
     def get_schema(self, get_stats=False):
         query = """
-            SELECT table_schema, table_name, column_name, data_type
+            SELECT table_schema, table_name, column_name
             FROM information_schema.columns
             WHERE table_schema NOT IN ('pg_catalog', 'information_schema')
         """
@@ -101,8 +101,7 @@ class Trino(BaseQueryRunner):
             if table_name not in schema:
                 schema[table_name] = {"name": table_name, "columns": []}
 
-            column = {"name": row["column_name"], "type": row["data_type"]}
-            schema[table_name]["columns"].append(column)
+            schema[table_name]["columns"].append(row["column_name"])
 
         return list(schema.values())
 
