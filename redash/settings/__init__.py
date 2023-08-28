@@ -336,20 +336,9 @@ default_query_runners = [
     "redash.query_runner.arango",
     "redash.query_runner.google_analytics4",
     "redash.query_runner.google_search_console",
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
     "redash.query_runner.ignite",
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
     "redash.query_runner.oracle",
->>>>>>> 0258dca82a2fe9cbd222a4bea60c12ca42356c4a
->>>>>>> parent of ffcce186 (ajuste merge)
-=======
->>>>>>> parent of 4cf1839b (Merge branch 'master' of https://github.com/getredash/redash)
-=======
->>>>>>> parent of fdd1d296 (Add redash.query_runner.oracle to default_query_runners (#6389))
+
 ]
 
 enabled_query_runners = array_from_string(
