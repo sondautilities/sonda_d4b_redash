@@ -23,7 +23,7 @@ services:
       - redis
     ports:
       - "5000:5000"
-      # - "5678:5678"
+      - "5678:5678"
     # expose:
     #   - 5000
     #   - 5678
@@ -60,10 +60,10 @@ services:
       - app-network
   postgres:
     image: pgautoupgrade/pgautoupgrade:15-alpine3.8
-    # ports:
-    #   - "15432:5432"
-    expose:
-      - 5432
+    ports:
+      - "15432:5432"
+    # expose:
+      # - 5432
     # The following turns the DB into less durable, but gains significant performance improvements for the tests run (x3
     # improvement on my personal machine). We should consider moving this into a dedicated Docker Compose configuration for
     # tests.
@@ -87,22 +87,22 @@ services:
     networks:
       - app-network
 
-  nginx:
-    build:
-      context: nginx/ # Use an image built from the specified dockerfile in the current directory.
-      dockerfile: Dockerfile
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d/
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-    ports:
-      - 443:443
-      - 5432:5432
-    depends_on:
-      - server
-      - postgres
-    restart: always
-    networks:
-      - app-network
+  # nginx:
+  #   build:
+  #     context: nginx/ # Use an image built from the specified dockerfile in the current directory.
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./nginx/conf.d:/etc/nginx/conf.d/
+  #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+  #   ports:
+  #     - 443:443
+  #     - 5432:5432
+  #   depends_on:
+  #     - server
+  #     - postgres
+  #   restart: always
+  #   networks:
+  #     - app-network
 
 volumes:
   redash-data:

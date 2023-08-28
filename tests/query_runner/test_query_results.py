@@ -11,6 +11,7 @@ from redash.query_runner.query_results import (
     create_table,
     extract_cached_query_ids,
     extract_query_ids,
+<<<<<<< HEAD
     fix_column_name,
     get_query_results,
 <<<<<<< HEAD
@@ -28,6 +29,10 @@ from redash.query_runner.query_results import (
 >>>>>>> parent of ffcce186 (ajuste merge)
 =======
 >>>>>>> parent of 4cf1839b (Merge branch 'master' of https://github.com/getredash/redash)
+=======
+    fix_column_name,
+    get_query_results,
+>>>>>>> parent of 0258dca8 (Enable manipulating parameterized queries with Query Results query runner (#5723))
 )
 from redash.utils import json_dumps
 from tests import BaseTestCase

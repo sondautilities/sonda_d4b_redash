@@ -58,6 +58,7 @@ def get_query_results(user, query_id, bring_from_cache):
     else:
         results, error = query.data_source.query_runner.run_query(query.query_text, user)
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
         results, error = query.data_source.query_runner.run_query(query.query_text, user)
@@ -71,6 +72,8 @@ def get_query_results(user, query_id, bring_from_cache):
 >>>>>>> parent of ffcce186 (ajuste merge)
 =======
 >>>>>>> parent of 4cf1839b (Merge branch 'master' of https://github.com/getredash/redash)
+=======
+>>>>>>> parent of 0258dca8 (Enable manipulating parameterized queries with Query Results query runner (#5723))
         if error:
             raise Exception("Failed loading results for query id {}.".format(query.id))
         else:
