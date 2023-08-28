@@ -11,8 +11,14 @@ x-redash-service: &redash-service
   env_file:
     - .env
 x-redash-environment: &redash-environment
-  env_file:
-    - .env
+  REDASH_LOG_LEVEL: "INFO"
+  REDASH_REDIS_URL: "redis://redis:6379/0"
+  REDASH_DATABASE_URL: "postgresql://postgres@postgres/postgres"
+  REDASH_RATELIMIT_ENABLED: "false"
+  REDASH_MAIL_DEFAULT_SENDER: "redash@example.com"
+  REDASH_MAIL_SERVER: "email"
+  REDASH_ENFORCE_CSRF: "true"
+  REDASH_GUNICORN_TIMEOUT: 60
   # Set secret keys in the .env file
 services:
   server:
@@ -22,8 +28,8 @@ services:
       - postgres
       - redis
     ports:
-      - "5001:5000"
-      - "5678:5678"
+      - "5000:5000"
+      # - "5678:5678"
     # expose:
     #   - 5000
     #   - 5678
@@ -54,16 +60,12 @@ services:
     networks:
       - app-network
   redis:
-    image: redis:7-alpine
-    restart: always
-    networks:
-      - app-network
+    image: redis:3-alpine
+    restart: unless-stopped
   postgres:
-    image: pgautoupgrade/pgautoupgrade:15-alpine3.8
+    image: postgres:9.5-alpine
     ports:
       - "15432:5432"
-    # expose:
-    #   - 5432
     # The following turns the DB into less durable, but gains significant performance improvements for the tests run (x3
     # improvement on my personal machine). We should consider moving this into a dedicated Docker Compose configuration for
     # tests.
@@ -78,36 +80,27 @@ services:
   email:
     image: maildev/maildev
     ports:
-      - "1080:1080"
-      - "1025:1025"
-    # expose:
-    #   - 1080
-    #   - 1025
+      - "1080:80"
     restart: unless-stopped
     networks:
       - app-network
 
-  # nginx:
-  #   build:
-  #     context: nginx/ # Use an image built from the specified dockerfile in the current directory.
-  #     dockerfile: Dockerfile
-  #   volumes:
-  #     - ./nginx/conf.d:/etc/nginx/conf.d/
-  #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-  #   ports:
-  #     - 443:443
-  #     # - 5000:5000
-  #     - 5678:5678
-  #     - 15432:5432
-  #     - 1080:1080
-  #     - 1025:1025
-  #   depends_on:
-  #     - server
-  #     - postgres
-  #     - email
-  #   restart: always
-  #   networks:
-  #     - app-network
+  nginx:
+    build:
+      context: nginx/ # Use an image built from the specified dockerfile in the current directory.
+      dockerfile: Dockerfile
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d/
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 443:443
+      - 5432:5432
+    depends_on:
+      - server
+      - postgres
+    restart: always
+    networks:
+      - app-network
 
 volumes:
   redash-data:

@@ -1,5 +1,5 @@
 import logging
-# import re
+import re
 import sqlite3
 
 from redash import models
@@ -56,7 +56,19 @@ def get_query_results(user, query_id, bring_from_cache):
         else:
             raise Exception("No cached result available for query {}.".format(query.id))
     else:
+<<<<<<< HEAD
         results, error = query.data_source.query_runner.run_query(query.query_text, user)
+=======
+<<<<<<< HEAD
+        results, error = query.data_source.query_runner.run_query(query.query_text, user)
+=======
+        query_text = query.query_text
+        if params is not None:
+            query_text = replace_query_parameters(query_text, params)
+
+        results, error = query.data_source.query_runner.run_query(query_text, user)
+>>>>>>> 0258dca82a2fe9cbd222a4bea60c12ca42356c4a
+>>>>>>> parent of ffcce186 (ajuste merge)
         if error:
             raise Exception("Failed loading results for query id {}.".format(query.id))
         else:

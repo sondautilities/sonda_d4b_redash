@@ -231,7 +231,11 @@ class TestQueryListResourceGet(BaseTestCase):
         rv = self.make_request("get", "/api/queries")
 
         assert len(rv.json["results"]) == 3
+<<<<<<< HEAD
+        assert set([result["id"] for result in rv.json["results"]]) == set([q1.id, q2.id, q3.id])
+=======
         assert set([result["id"] for result in rv.json["results"]]) == {q1.id, q2.id, q3.id}
+>>>>>>> 0258dca82a2fe9cbd222a4bea60c12ca42356c4a
 
     def test_filters_with_tags(self):
         q1 = self.factory.create_query(tags=["test"])
@@ -249,7 +253,11 @@ class TestQueryListResourceGet(BaseTestCase):
 
         rv = self.make_request("get", "/api/queries?q=sales")
         assert len(rv.json["results"]) == 2
+<<<<<<< HEAD
+        assert set([result["id"] for result in rv.json["results"]]) == set([q1.id, q2.id])
+=======
         assert set([result["id"] for result in rv.json["results"]]) == {q1.id, q2.id}
+>>>>>>> 0258dca82a2fe9cbd222a4bea60c12ca42356c4a
 
 
 class TestQueryListResourcePost(BaseTestCase):
@@ -335,7 +343,11 @@ class TestQueryArchiveResourceGet(BaseTestCase):
         rv = self.make_request("get", "/api/queries/archive")
 
         assert len(rv.json["results"]) == 2
+<<<<<<< HEAD
+        assert set([result["id"] for result in rv.json["results"]]) == set([q1.id, q2.id])
+=======
         assert set([result["id"] for result in rv.json["results"]]) == {q1.id, q2.id}
+>>>>>>> 0258dca82a2fe9cbd222a4bea60c12ca42356c4a
 
     def test_search_term(self):
         q1 = self.factory.create_query(name="Sales", is_archived=True)
@@ -344,7 +356,11 @@ class TestQueryArchiveResourceGet(BaseTestCase):
 
         rv = self.make_request("get", "/api/queries/archive?q=sales")
         assert len(rv.json["results"]) == 2
+<<<<<<< HEAD
+        assert set([result["id"] for result in rv.json["results"]]) == set([q1.id, q2.id])
+=======
         assert set([result["id"] for result in rv.json["results"]]) == {q1.id, q2.id}
+>>>>>>> 0258dca82a2fe9cbd222a4bea60c12ca42356c4a
 
 
 class QueryRefreshTest(BaseTestCase):

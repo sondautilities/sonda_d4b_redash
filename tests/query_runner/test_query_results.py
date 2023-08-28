@@ -11,8 +11,21 @@ from redash.query_runner.query_results import (
     create_table,
     extract_cached_query_ids,
     extract_query_ids,
+<<<<<<< HEAD
     fix_column_name,
     get_query_results,
+=======
+<<<<<<< HEAD
+    fix_column_name,
+    get_query_results,
+=======
+    extract_query_params,
+    fix_column_name,
+    get_query_results,
+    prepare_parameterized_query,
+    replace_query_parameters,
+>>>>>>> 0258dca82a2fe9cbd222a4bea60c12ca42356c4a
+>>>>>>> parent of ffcce186 (ajuste merge)
 )
 from redash.utils import json_dumps
 from tests import BaseTestCase
