@@ -15,6 +15,7 @@ from redash.authentication import (
 from redash.authentication.org_resolving import current_org
 from redash.handlers.base import org_scoped_rule
 from redash.utils import mustache_render
+import os
 
 logger = logging.getLogger("saml_auth")
 blueprint = Blueprint("saml_auth", __name__)
@@ -43,7 +44,7 @@ def get_saml_client(org):
             _scheme=settings.SAML_SCHEME_OVERRIDE,
         )
     else:
-        acs_url = url_for("saml_auth.idp_initiated", org_slug=org.slug, _external=True)
+        acs_url = url_for("saml_auth.idp_initiated", org_slug=org.slug, _external=True) #"https://localhost/saml/callback?org_slug=default"
 
     saml_settings = {
         "metadata": {"remote": [{"url": metadata_url}]},
@@ -55,6 +56,14 @@ def get_saml_client(org):
                         (acs_url, BINDING_HTTP_POST),
                     ]
                 },
+                # "mappings": {
+                #     "nickname": "FirstName",
+                #     "name": "LastName"
+                # },
+                # "nameIdentifierProbes": ["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"],
+        
+                # "passthroughClaimsWithNoMapping": False,
+                # "includeAttributeNameFormat": False,
                 # Don't verify that the incoming requests originate from us via
                 # the built-in cache for authn request ids in pysaml2
                 "allow_unsolicited": True,
@@ -90,8 +99,8 @@ def get_saml_client(org):
 
         saml_settings["metadata"] = {"inline": [metadata_inline]}
 
-    if acs_url is not None and acs_url != "":
-        saml_settings["entityid"] = acs_url
+    if entity_id is not None and entity_id != "":
+        saml_settings["entityid"] = entity_id
 
     if sp_settings:
         import json
@@ -102,6 +111,9 @@ def get_saml_client(org):
     sp_config.load(saml_settings)
     sp_config.allow_unknown_attributes = True
     saml_client = Saml2Client(config=sp_config)
+    logger.info('---saml_settings--')
+    for k, v in saml_settings.items():
+        print(k, v)
 
     return saml_client
 
@@ -112,17 +124,26 @@ def idp_initiated(org_slug=None):
         logger.error("SAML Login is not enabled")
         return redirect(url_for("redash.index", org_slug=org_slug))
 
+    
     saml_client = get_saml_client(current_org)
     try:
         authn_response = saml_client.parse_authn_request_response(
             request.form["SAMLResponse"], entity.BINDING_HTTP_POST
         )
+        # logger.info('--AUTHEN_RESPONSE--', authn_response.keys())
+        
+        "AQQUI"
     except Exception:
         logger.error("Failed to parse SAML response", exc_info=True)
+
         flash("SAML login failed. Please try again later.")
         return redirect(url_for("redash.login", org_slug=org_slug))
 
-    authn_response.get_identity()
+    # authn_response.get_identity()
+    # logger.info('authn_response', authn_response.keys())
+    # logger.info('----AQQUUUIIII----authn_response--', authn_response.get_identity())
+    # for k, v in get_identity.items():
+        # print(k, v)
     user_info = authn_response.get_subject()
     email = user_info.text
     name = "%s %s" % (
@@ -130,9 +151,12 @@ def idp_initiated(org_slug=None):
         authn_response.ava["LastName"][0],
     )
 
+  
+
     # This is what as known as "Just In Time (JIT) provisioning".
     # What that means is that, if a user in a SAML assertion
     # isn't in the user store, we create that user first, then log them in
+
     user = create_and_login_user(current_org, name, email)
     if user is None:
         return logout_and_redirect_to_index()
@@ -152,8 +176,9 @@ def sp_initiated(org_slug=None):
         logger.error("SAML Login is not enabled")
         return redirect(url_for("redash.index", org_slug=org_slug))
 
-    saml_client = get_saml_client(current_org)
-    nameid_format = current_org.get_setting("auth_saml_nameid_format")
+    saml_client = get_saml_client(current_org) 
+    nameid_format = current_org.get_setting("auth_saml_nameid_format") ## 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
+    # logger.info('--------AQUI---- nameid_format--', nameid_format)
     if nameid_format is None or nameid_format == "":
         nameid_format = NAMEID_FORMAT_TRANSIENT
 

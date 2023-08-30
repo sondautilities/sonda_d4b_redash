@@ -21,12 +21,12 @@ services:
     depends_on:
       - postgres
       - redis
-    ports:
-      - "5000:5000"
-      # - "5678:5678"
-    # expose:
-    #   - 5000
-    #   - 5678
+    # ports:
+    #   - "5000:5000"
+    #   - "5678:5678"
+    expose:
+      - 5000
+      - 5678
     restart: always
     <<: *redash-environment
     environment:
@@ -77,12 +77,12 @@ services:
       - app-network
   email:
     image: maildev/maildev
-    ports:
-      - "1080:1080"
-      - "1025:1025"
-    # expose:
-    #   - 1080
-    #   - 1025
+    # ports:
+    #   - "1080:1080"
+    #   - "1025:1025"
+    expose:
+      - 1080
+      - 1025
     restart: unless-stopped
     networks:
       - app-network
