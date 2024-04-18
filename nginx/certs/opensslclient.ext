@@ -1,8 +1,0 @@
-
-subjectAltName = @alt_names
-extendedKeyUsage = clientAuth
-
-[alt_names]
-IP.1 = 127.0.0.1
-DNS.1 = https://developersonda.tech/
-
